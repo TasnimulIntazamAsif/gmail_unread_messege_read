@@ -1,16 +1,31 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from database import init_db
+from gmail_scraper import scrape_gmail
+from export_csv import export_to_csv
+from export_excel import export_to_excel
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def main():
+    print("🚀 System Starting...\n")
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # Initialize database
+    print("Initializing database...")
+    init_db()
+
+    # Scrape Gmail
+    print("\nScraping Gmail...")
+    scrape_gmail()
+
+    # Export data
+    print("\nExporting data...")
+
+    export_to_csv()
+    print("CSV exported")
+
+    export_to_excel()
+    print("Excel exported")
+
+    print("\nSystem completed successfully!")
+
+
+if __name__ == "__main__":
+    main()

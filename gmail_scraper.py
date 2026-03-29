@@ -1,78 +1,33 @@
-import sqlite3
 from playwright.sync_api import sync_playwright
-
-conn = sqlite3.connect("emails.db")
-cursor = conn.cursor()
-
-# Table create (if not exists)
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS emails(
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-sender TEXT,
-subject TEXT,
-time TEXT,
-folder TEXT
-)
-""")
-
-conn.commit()
+from database import save_email
 
 
-def save_email(sender, subject, time, folder):
+def scrape_gmail():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)
+        context = browser.new_context(storage_state="storage_state.json")
+        page = context.new_page()
 
-    # Example filter conditions
-    if sender == "" or subject == "":
-        return
+        page.goto("https://mail.google.com/mail/u/0/#inbox")
 
-    cursor.execute(
-        "INSERT INTO emails(sender,subject,time,folder) VALUES(?,?,?,?)",
-        (sender, subject, time, folder)
-    )
+        print("📥 Loading Gmail...")
+        page.wait_for_selector("tr.zA", timeout=60000)
 
-    conn.commit()
+        emails = page.query_selector_all("tr.zA")
 
+        print(f"Found {len(emails)} emails")
 
-def read_emails(page, folder):
+        for email in emails[:10]:
+            try:
+                sender = email.query_selector(".yX.xY span").inner_text()
+                subject = email.query_selector(".bog").inner_text()
+                time = email.query_selector(".xW.xY span").get_attribute("title")
 
-    page.wait_for_timeout(5000)
+                print(sender, "|", subject)
 
-    emails = page.locator("tr.zE")
+                save_email(sender, subject, time)
 
-    count = emails.count()
+            except Exception as e:
+                print("Error:", e)
 
-    print(folder, "Unread Emails:", count)
-
-    for i in range(count):
-
-        row = emails.nth(i)
-
-        try:
-            sender = row.locator("span.zF").first.inner_text()
-            subject = row.locator("span.bog").first.inner_text()
-            time = row.locator("td.xW span").first.inner_text()
-
-            print(sender, subject, time)
-
-            save_email(sender, subject, time, folder)
-
-        except:
-            print("Skipped email")
-
-
-with sync_playwright() as p:
-
-    browser = p.chromium.launch(headless=False)
-
-    context = browser.new_context(storage_state="storage_state.json")
-
-    page = context.new_page()
-
-    page.goto("https://mail.google.com/mail/u/0/#inbox")
-
-    read_emails(page, "Inbox")
-
-    page.goto("https://mail.google.com/mail/u/0/#spam")
-
-    read_emails(page, "Spam")
-
-    browser.close()
+        browser.close()

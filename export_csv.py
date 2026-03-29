@@ -1,17 +1,17 @@
 import sqlite3
-import pandas as pd
+import csv
 
-conn = sqlite3.connect("emails.db")
 
-# Filter example
-query = """
-SELECT sender, subject, time, folder
-FROM emails
-WHERE sender NOT LIKE '%noreply%'
-"""
+def export_to_csv():
+    conn = sqlite3.connect("emails.db")
+    cursor = conn.cursor()
 
-df = pd.read_sql_query(query, conn)
+    cursor.execute("SELECT sender, subject, time FROM emails")
+    rows = cursor.fetchall()
 
-df.to_csv("filtered_emails.csv", index=False)
+    with open("emails.csv", "w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Sender", "Subject", "Time"])
+        writer.writerows(rows)
 
-print("Filtered CSV Exported")
+    conn.close()

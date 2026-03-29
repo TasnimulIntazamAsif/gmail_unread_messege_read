@@ -1,10 +1,13 @@
 import sqlite3
 import pandas as pd
 
-conn = sqlite3.connect("emails.db")
 
-df = pd.read_sql_query("SELECT * FROM emails",conn)
+def export_to_excel():
+    conn = sqlite3.connect("emails.db")
 
-df.to_excel("emails.xlsx",index=False)
+    query = "SELECT sender, subject, time FROM emails"
+    df = pd.read_sql_query(query, conn)
 
-print("Excel Exported")
+    df.to_excel("emails.xlsx", index=False)
+
+    conn.close()

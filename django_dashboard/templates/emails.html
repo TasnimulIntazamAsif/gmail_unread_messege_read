@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Asif Gmail Dashboard</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+
+    /* 🌌 Deep Gradient Background */
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    padding: 40px 20px;
+}
+
+/* 🔥 Neon Header */
+.header {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 32px;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #00f2fe, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header p {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* 💎 Glass Container */
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 30px;
+
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 18px;
+
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.1);
+}
+
+/* 📊 Stats Bar */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.stat-box {
+    background: rgba(255,255,255,0.05);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* 📋 Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+/* 🌈 Gradient Header */
+thead {
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    color: white;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+}
+
+th {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ✨ Rows */
+tbody tr {
+    color: #fff;
+    transition: 0.3s ease;
+}
+
+tbody tr:nth-child(even) {
+    background: rgba(255,255,255,0.03);
+}
+
+tbody tr:hover {
+    background: rgba(0, 255, 255, 0.1);
+    transform: scale(1.01);
+}
+
+/* 🟢 Badge */
+.badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    background: #00ff9d;
+    color: #000;
+    font-weight: bold;
+}
+
+/* ✨ Glow Border */
+.container:hover {
+    box-shadow: 0 0 60px rgba(0,255,255,0.3);
+    transition: 0.4s;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+    .stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #aaa;
+    font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>📧 Asif's Unread Gmail Scrapped Dashboard</h1>
+    <p>Playwright Automation System</p>
+</div>
+
+<div class="container">
+
+    <!-- 📊 Stats -->
+    <div class="stats">
+        <div class="stat-box">📨 Total Emails: {{ emails|length }}</div>
+        <div class="stat-box">⚡ Status: Active</div>
+    </div>
+
+    <!-- 📋 Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Sender</th>
+                <th>Subject</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for email in emails %}
+            <tr>
+                <td>{{ email.0 }}</td>
+                <td>{{ email.1 }}</td>
+                <td>{{ email.2 }}</td>
+                <td><span class="badge">New</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        © 2026 Asif | Smart Gmail Automation 🚀
+    </div>
+
+</div>
+
+</body>
+</html>

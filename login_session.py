@@ -1,22 +1,25 @@
 from playwright.sync_api import sync_playwright
 
-with sync_playwright() as p:
+def login():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(
+            headless=False,
+            args=["--disable-blink-features=AutomationControlled"]
+        )
 
-    browser = p.chromium.launch(
-        headless=False,
-        args=["--disable-blink-features=AutomationControlled"]
-    )
+        context = browser.new_context()
+        page = context.new_page()
 
-    context = browser.new_context()
+        page.goto("https://accounts.google.com/")
 
-    page = context.new_page()
+        print("👉 Login manually")
+        input("Press ENTER after login...")
 
-    page.goto("https://accounts.google.com")
+        context.storage_state(path="storage_state.json")
 
-    print("Login manually then press ENTER")
+        print("✅ Login saved!")
 
-    input()
+        browser.close()
 
-    context.storage_state(path="storage_state.json")
-
-    browser.close()
+if __name__ == "__main__":
+    login()
