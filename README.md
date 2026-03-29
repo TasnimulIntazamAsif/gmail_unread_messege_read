@@ -14,7 +14,8 @@ This project demonstrates real-world automation, data scraping, and
 backend integration.
 
 ------------------------------------------------------------------------
-<img width="2227" height="1286" alt="image" src="https://github.com/user-attachments/assets/077e193e-a508-442d-a791-8e06c411282a" />
+<img width="2227" height="1286" alt="Screenshot 2026-03-29 125511" src="https://github.com/user-attachments/assets/e51a0d88-89e0-4555-9052-b81e1a99ff01" />
+
 
 ## 🎯 Features
 
