@@ -14,7 +14,20 @@ This project demonstrates real-world automation, data scraping, and
 backend integration.
 
 ------------------------------------------------------------------------
-<img width="2227" height="1286" alt="Screenshot 2026-03-29 125511" src="https://github.com/user-attachments/assets/e51a0d88-89e0-4555-9052-b81e1a99ff01" />
+# User Dashboard
+<img width="2229" height="1305" alt="Screenshot 2026-04-02 125552" src="https://github.com/user-attachments/assets/39c5e5db-0587-4a33-81ab-981f9f295d19" />
+
+# Search bar
+<img width="2230" height="1269" alt="Screenshot 2026-04-02 125621" src="https://github.com/user-attachments/assets/4840eecb-8288-48bb-99cb-097cccf69c44" />
+# filter options 
+<img width="1134" height="237" alt="Screenshot 2026-04-02 125643" src="https://github.com/user-attachments/assets/08231985-7578-4751-8384-64d3f11d43c2" />
+
+<img width="1792" height="891" alt="Screenshot 2026-04-02 125717" src="https://github.com/user-attachments/assets/54d29334-3dbc-429b-b994-7091894143b6" />
+
+<img width="1797" height="679" alt="Screenshot 2026-04-02 125732" src="https://github.com/user-attachments/assets/f1fe852b-43c9-4b03-bbf2-7eb876ac55f9" />
+
+
+
 
 
 ## 🎯 Features
