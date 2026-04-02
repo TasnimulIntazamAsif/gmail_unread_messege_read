@@ -1,108 +1,75 @@
 from pathlib import Path
+import os
 
-# Base directory
+# BASE DIR
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-key'
 
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
+# ✅ INSTALLED APPS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.sessions',        # ✅ REQUIRED
+    'django.contrib.messages',        # ✅ REQUIRED
     'django.contrib.staticfiles',
 
-    # Your app
-    'dashboard.apps.DashboardConfig',
+    'dashboard',
 ]
 
-
+# ✅ MIDDLEWARE (VERY IMPORTANT)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',   # ✅ REQUIRED
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # ✅ REQUIRED
+    'django.contrib.messages.middleware.MessageMiddleware',     # ✅ REQUIRED
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 ROOT_URLCONF = 'gmail_dashboard.urls'
 
-
-# Templates
+# ✅ TEMPLATES (FULL FIX)
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-
-        'DIRS': [BASE_DIR / 'templates'],
-
-        'APP_DIRS': True,
-
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
+{
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [os.path.join(BASE_DIR, 'templates')],
+    'APP_DIRS': True,
+    'OPTIONS': {
+        'context_processors': [
+            'django.template.context_processors.debug',
+            'django.template.context_processors.request',   # ✅ REQUIRED
+            'django.contrib.auth.context_processors.auth',   # ✅ REQUIRED
+            'django.contrib.messages.context_processors.messages', # ✅ REQUIRED
+        ],
     },
+}
 ]
-
 
 WSGI_APPLICATION = 'gmail_dashboard.wsgi.application'
 
-ASGI_APPLICATION = "gmail_dashboard.asgi.application"
-
-
-# Database
+# DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-
-        # Gmail scraper database
-        'NAME': BASE_DIR.parent / 'emails.db',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
+# PASSWORD VALIDATORS
+AUTH_PASSWORD_VALIDATORS = []
 
-# Password validation
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-]
-
-
-# Internationalization
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Asia/Dhaka'
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files
 STATIC_URL = 'static/'
 
-
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

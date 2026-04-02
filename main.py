@@ -1,31 +1,44 @@
-from database import init_db
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(BASE_DIR, "django_dashboard"))
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gmail_dashboard.settings")
+
+import django
+django.setup()
+
+from dashboard.models import Email
 from gmail_scraper import scrape_gmail
-from export_csv import export_to_csv
-from export_excel import export_to_excel
+from spam_detector import detect_spam
+from file_storage import save_to_files
 
+def run():
+    print("Running scraper...")
 
-def main():
-    print("🚀 System Starting...\n")
+    try:
+        emails = scrape_gmail()
+    except Exception as e:
+        print(str(e))
+        return
 
-    # Initialize database
-    print("Initializing database...")
-    init_db()
+    for e in emails:
+        category = detect_spam(e["subject"], e["body"])
 
-    # Scrape Gmail
-    print("\nScraping Gmail...")
-    scrape_gmail()
+        email_data = {
+            "sender": e["sender"],
+            "subject": e["subject"],
+            "body": e["body"],
+            "status": e["status"],
+            "category": category,
+            "timestamp": e["timestamp"]
+        }
 
-    # Export data
-    print("\nExporting data...")
+        Email.objects.create(**email_data)
+        save_to_files(email_data)
 
-    export_to_csv()
-    print("CSV exported")
-
-    export_to_excel()
-    print("Excel exported")
-
-    print("\nSystem completed successfully!")
-
+    print("DONE")
 
 if __name__ == "__main__":
-    main()
+    run()

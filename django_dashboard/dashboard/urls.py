@@ -1,7 +1,6 @@
 from django.urls import path
-from . import views
-
+from .views import email_list
 
 urlpatterns = [
-    path("", views.email_list, name="email_list"),
+    path('', email_list),
 ]

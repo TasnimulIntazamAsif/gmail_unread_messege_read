@@ -1,20 +1,20 @@
 from django.shortcuts import render
-from pathlib import Path
-import sqlite3
-
-from django.conf import settings
-
+from .models import Email
 
 def email_list(request):
+    query = request.GET.get('q')
+    status = request.GET.get('status')
+    category = request.GET.get('category')
 
-    db_path = Path(settings.DATABASES["default"]["NAME"])
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
+    emails = Email.objects.all()
 
-    cursor.execute("SELECT sender, subject, time FROM emails")
+    if query:
+        emails = emails.filter(subject__icontains=query) | emails.filter(sender__icontains=query)
 
-    emails = cursor.fetchall()
+    if status:
+        emails = emails.filter(status=status)
 
-    conn.close()
+    if category:
+        emails = emails.filter(category=category)
 
     return render(request, "emails.html", {"emails": emails})
