@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+</head>
+<body>
+
+<h2>Email Dashboard</h2>
+
+<form>
+<input name="q" placeholder="Search">
+<select name="status">
+<option value="">Status</option>
+<option value="Unread">Unread</option>
+<option value="Read">Read</option>
+</select>
+
+<select name="category">
+<option value="">Category</option>
+<option value="Spam">Spam</option>
+<option value="Authentic">Authentic</option>
+</select>
+
+<button>Search</button>
+</form>
+
+<table border="1">
+<tr>
+<th>Sender</th>
+<th>Subject</th>
+<th>Status</th>
+<th>Category</th>
+<th>Time</th>
+</tr>
+
+{% for e in emails %}
+<tr>
+<td>{{e.sender}}</td>
+<td>{{e.subject}}</td>
+<td>{{e.status}}</td>
+<td>{{e.category}}</td>
+<td>{{e.timestamp}}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>
