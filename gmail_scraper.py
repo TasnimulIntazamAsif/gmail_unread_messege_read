@@ -1,6 +1,40 @@
 from playwright.sync_api import sync_playwright
 from datetime import datetime
 
+# -------------------------------
+# ✅ 1. SUMMARY FUNCTION
+# -------------------------------
+def summarize_email(text, max_sentences=2):
+    if not text:
+        return ""
+    sentences = text.split(". ")
+    return ". ".join(sentences[:max_sentences])
+
+
+# -------------------------------
+# ✅ 2. CATEGORY FUNCTION
+# -------------------------------
+def categorize_email(text):
+    if not text:
+        return "General"
+
+    text = text.lower()
+
+    if "invoice" in text or "payment" in text:
+        return "Finance"
+    elif "meeting" in text:
+        return "Work"
+    elif "offer" in text or "sale" in text:
+        return "Promotion"
+    elif "otp" in text or "verification" in text:
+        return "Security"
+    else:
+        return "General"
+
+
+# -------------------------------
+# ✅ 3. MAIN SCRAPER
+# -------------------------------
 def scrape_page(page, label):
     emails = []
 
@@ -19,10 +53,18 @@ def scrape_page(page, label):
             row.click()
             page.wait_for_timeout(4000)
 
+            # ✅ FIXED BODY SELECTOR (more stable)
             body = ""
-            el = page.query_selector("div.a3s.aiL")
+            el = page.locator("div.a3s").first
             if el:
                 body = el.inner_text()
+
+            # ✅ SUMMARY + CATEGORY
+            summary = summarize_email(body)
+            category = categorize_email(body)
+
+            # ✅ TIMESTAMP (you can improve later from Gmail DOM)
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             page.go_back()
             page.wait_for_timeout(3000)
@@ -30,17 +72,23 @@ def scrape_page(page, label):
             emails.append({
                 "sender": sender,
                 "subject": subject,
+                "summary": summary,   # 🔥 NEW
                 "body": body,
+                "timestamp": timestamp,
                 "status": status,
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "category": category  # 🔥 NEW
             })
 
-        except:
+        except Exception as e:
+            print("Error:", e)
             continue
 
     return emails
 
 
+# -------------------------------
+# ✅ 4. MAIN FUNCTION
+# -------------------------------
 def scrape_gmail():
     all_emails = []
 
