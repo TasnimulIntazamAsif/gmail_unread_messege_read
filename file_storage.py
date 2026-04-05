@@ -10,12 +10,12 @@ def save_to_files(email):
         writer = csv.writer(f)
 
         if not exists:
-            writer.writerow(["Sender","Subject","Body","Category","Time"])
+            writer.writerow(["Sender","Subject","Summary","Category","Time"])
 
         writer.writerow([
             email["sender"],
             email["subject"],
-            email["body"],   # এখন summary save হচ্ছে
+            email["body"],   # summary
             email["category"],
             email["timestamp"]
         ])

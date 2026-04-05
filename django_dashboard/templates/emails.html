@@ -5,155 +5,65 @@
 
 <style>
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #eef2f7;
-    margin: 0;
+    font-family: Arial;
+    background: #f4f8fc;
 }
 
-/* Header */
-.header {
-    background: linear-gradient(135deg,#1584c4,#06b6d4);
-    color: white;
-    padding: 18px;
+h2 {
     text-align: center;
-    font-size: 22px;
-    font-weight: 600;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: linear-gradient(90deg,#1584c4,#06b6d4);
+    color: white;
+    padding: 20px;
 }
 
-/* Container */
-.container {
-    width: 95%;
-    max-width: 1200px;
-    margin: 30px auto;
-}
-
-/* Card */
-.card {
-    background: white;
-    padding: 18px;
-    border-radius: 14px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-}
-
-/* Form */
 form {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
+    text-align: center;
+    margin: 20px;
 }
 
 input, select {
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 1px solid #d1d5db;
-    outline: none;
-    font-size: 14px;
+    padding: 8px;
+    margin: 5px;
 }
 
-input:focus, select:focus {
-    border-color: #06b6d4;
-}
-
-/* Button */
 button {
-    padding: 10px 18px;
-    background: linear-gradient(135deg,#06b6d4,#1584c4);
+    padding: 8px 15px;
+    background: #1584c4;
     color: white;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-button:hover {
-    transform: scale(1.05);
-}
-
-/* Table */
-.table-wrapper {
-    overflow-x: auto;
 }
 
 table {
-    width: 100%;
+    width: 95%;
+    margin: auto;
     border-collapse: collapse;
-    border-radius: 12px;
-    overflow: hidden;
+    background: white;
 }
 
-/* Header */
 th {
-    background: #0f172a;
+    background: #02689d;
     color: white;
-    padding: 12px;
-    font-size: 14px;
-    text-align: left;
+    padding: 10px;
 }
 
-/* Cells */
 td {
-    padding: 12px;
-    border-bottom: 1px solid #e5e7eb;
-    font-size: 14px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
     vertical-align: top;
 }
 
-/* Rows */
-tr {
-    background: white;
-    transition: 0.2s;
-}
-
-tr:hover {
-    background: #f8fafc;
-}
-
-/* Alternate rows */
 tr:nth-child(even) {
-    background: #f9fafb;
+    background: #f2f2f2;
 }
 
-/* Email body */
-.body-text {
-    max-width: 400px;
-    overflow-y: auto;
-    white-space: pre-wrap;
-    max-height: 120px;
-    font-size: 13px;
-    color: #374151;
-}
-
-/* Badges */
-.badge {
-    padding: 5px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-/* Status */
-.unread {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-.read {
-    background: #dcfce7;
-    color: #16a34a;
-}
-
-/* Category */
 .spam {
-    background: #fef3c7;
-    color: #d97706;
+    color: red;
+    font-weight: bold;
 }
 
 .auth {
-    background: #e0f2fe;
-    color: #0284c7;
+    color: green;
+    font-weight: bold;
 }
 </style>
 
@@ -165,17 +75,10 @@ setTimeout(()=>location.reload(),10000);
 
 <body>
 
-<div class="header">
-    📧 <b>ASIF's Email Scrapping (unread/read/spam) Dashboard </b>
-    <br> Here you will visualize the Scrapped mails  in a structured way</br>
-</div>
+<h2>Email Dashboard</h2>
 
-<div class="container">
-
-<!-- Search -->
-<div class="card">
 <form method="GET">
-    <input name="q" placeholder="🔍 Search..." value="{{request.GET.q}}">
+    <input name="q" placeholder="Search..." value="{{request.GET.q}}">
 
     <select name="status">
         <option value="">Status</option>
@@ -191,17 +94,12 @@ setTimeout(()=>location.reload(),10000);
 
     <button type="submit">Search</button>
 </form>
-</div>
-
-<!-- Table -->
-<div class="card table-wrapper">
 
 <table>
-
 <tr>
 <th>Sender</th>
 <th>Subject</th>
-<th>Body</th>
+<th>Body</th> <!-- FULL BODY -->
 <th>Status</th>
 <th>Category</th>
 <th>Time</th>
@@ -212,33 +110,21 @@ setTimeout(()=>location.reload(),10000);
 <td>{{e.sender}}</td>
 <td>{{e.subject}}</td>
 
-<td>
-<div class="body-text">
+<!-- ✅ FULL BODY SHOW -->
+<td style="max-width:400px; overflow:auto; white-space:pre-wrap;">
 {{e.body}}
-</div>
 </td>
 
-<td>
-<span class="badge {% if e.status == 'Unread' %}unread{% else %}read{% endif %}">
-{{e.status}}
-</span>
-</td>
+<td>{{e.status}}</td>
 
-<td>
-<span class="badge {% if e.category == 'Spam' %}spam{% else %}auth{% endif %}">
+<td class="{% if e.category == 'Spam' %}spam{% else %}auth{% endif %}">
 {{e.category}}
-</span>
 </td>
 
 <td>{{e.timestamp}}</td>
 </tr>
 {% endfor %}
-
 </table>
-
-</div>
-
-</div>
 
 </body>
 </html>
