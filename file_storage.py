@@ -1,12 +1,21 @@
-import pandas as pd
-import os
+import csv, os
 
 def save_to_files(email):
-    df = pd.DataFrame([email])
 
-    if email["category"] == "Spam":
-        file = "spam_emails.csv"
-    else:
-        file = "authentic_emails.csv"
+    filename = "spam_emails.csv" if email["category"]=="Spam" else "authentic_emails.csv"
 
-    df.to_csv(file, mode='a', header=not os.path.exists(file), index=False)
+    exists = os.path.exists(filename)
+
+    with open(filename,"a",newline="",encoding="utf-8") as f:
+        writer = csv.writer(f)
+
+        if not exists:
+            writer.writerow(["Sender","Subject","Body","Category","Time"])
+
+        writer.writerow([
+            email["sender"],
+            email["subject"],
+            email["body"],   # এখন summary save হচ্ছে
+            email["category"],
+            email["timestamp"]
+        ])
